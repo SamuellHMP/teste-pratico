@@ -82,6 +82,16 @@ const ClienteList: React.FC = () => {
     setCurrentPage(1);
   };
 
+  const formatCpfCnpj = (cpfCnpj: string): string => {
+    const cleanedValue = cpfCnpj.replace(/\D/g, '');
+    if (cleanedValue.length === 11) {
+      return cleanedValue.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+    } else if (cleanedValue.length === 14) {
+      return cleanedValue.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
+    }
+    return cpfCnpj;
+  };
+
   if (loading) {
     return <div className="text-center py-1">Carregando clientes...</div>;
   }
@@ -103,7 +113,7 @@ const ClienteList: React.FC = () => {
         />
       ) : (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+          <div className="flex justify-center gap-4 mb-4">
             <div>
               <label htmlFor="filterName" className="block text-gray-700 text-sm font-bold mb-1">
                 Filtrar por Nome:
@@ -130,7 +140,7 @@ const ClienteList: React.FC = () => {
             </div>
           </div>
 
-          <div className="shadow rounded border mb-2 overflow-x-auto"> {/* Adicionado overflow-x-auto para responsividade */}
+          <div className="shadow rounded border mb-2 overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
@@ -155,9 +165,13 @@ const ClienteList: React.FC = () => {
                 {currentClientes.map(cliente => (
                   <tr key={cliente.id} className="hover:bg-gray-100 cursor-pointer" onClick={() => handleClienteClick(cliente)}>
                     <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-900">{cliente.nome}</td>
-                    <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-500">{cliente.cpfCnpj}</td>
+                    <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-500">{formatCpfCnpj(cliente.cpfCnpj)}</td>
                     <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-500">{cliente.dataNascimento.toLocaleDateString()}</td>
-                    <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-500">{cliente.rendaAnual.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                    <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
+                      {isNaN(cliente.rendaAnual)
+                        ? <i className="text-gray-500">indisponível</i>
+                        : cliente.rendaAnual.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                    </td>
                     <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-500">{cliente.codigoAgencia}</td>
                   </tr>
                 ))}
