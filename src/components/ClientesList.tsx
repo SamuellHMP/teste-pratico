@@ -1,22 +1,30 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Cliente } from '../interfaces/Cliente';
+import { Conta } from '../interfaces/Conta';
+import { Agencia } from '../interfaces/Agencia';
 import { fetchData } from '../utils/dataFetcher';
+import ClienteDetails from './ClienteDetails'; // Importe o novo componente
 
 const itemsPerPage = 10;
 
 const ClienteList: React.FC = () => {
   const [clientes, setClientes] = useState<Cliente[]>([]);
+  const [contas, setContas] = useState<Conta[]>([]);
+  const [agencias, setAgencias] = useState<Agencia[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [filterName, setFilterName] = useState('');
   const [searchCpfCnpj, setSearchCpfCnpj] = useState('');
+  const [selectedCliente, setSelectedCliente] = useState<Cliente | null>(null);
 
   useEffect(() => {
     const loadData = async () => {
       try {
         const data = await fetchData();
         setClientes(data.clientes);
+        setContas(data.contas);
+        setAgencias(data.agencias);
         setLoading(false);
       } catch (err: unknown) {
         if (err instanceof Error) {
@@ -31,7 +39,6 @@ const ClienteList: React.FC = () => {
     loadData();
   }, []);
 
-  // Filtra e pesquisa os clientes
   const filteredClientes = useMemo(() => {
     return clientes.filter(cliente => {
       const nameMatch = cliente.nome.toLowerCase().includes(filterName.toLowerCase());
@@ -46,6 +53,8 @@ const ClienteList: React.FC = () => {
   const currentClientes = filteredClientes.slice(indexOfFirstItem, indexOfLastItem);
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+  const handleClienteClick = (cliente: Cliente) => setSelectedCliente(cliente);
+  const handleVoltarLista = () => setSelectedCliente(null);
 
   const renderPageNumbers = () => {
     const pageNumbers = [];
@@ -65,12 +74,12 @@ const ClienteList: React.FC = () => {
 
   const handleFilterNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFilterName(event.target.value);
-    setCurrentPage(1); // Resetar a página ao filtrar
+    setCurrentPage(1);
   };
 
   const handleSearchCpfCnpjChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchCpfCnpj(event.target.value);
-    setCurrentPage(1); // Resetar a página ao pesquisar
+    setCurrentPage(1);
   };
 
   if (loading) {
@@ -83,65 +92,80 @@ const ClienteList: React.FC = () => {
 
   return (
     <div>
-      <h2>Lista de Clientes</h2>
-
-      <div className="mb-4 flex items-center space-x-4">
-        <div>
-          <label htmlFor="filterName" className="block text-gray-700 text-sm font-bold mb-2">
-            Filtrar por Nome:
-          </label>
-          <input
-            type="text"
-            id="filterName"
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            value={filterName}
-            onChange={handleFilterNameChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="searchCpfCnpj" className="block text-gray-700 text-sm font-bold mb-2">
-            Pesquisar por CPF/CNPJ:
-          </label>
-          <input
-            type="text"
-            id="searchCpfCnpj"
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            value={searchCpfCnpj}
-            onChange={handleSearchCpfCnpjChange}
-          />
-        </div>
-      </div>
-
-      {currentClientes.length > 0 ? (
-        <ul>
-          {currentClientes.map(cliente => (
-            <li key={cliente.id}>
-              {cliente.nome} - {cliente.cpfCnpj}
-            </li>
-          ))}
-        </ul>
+      {selectedCliente ? (
+        <ClienteDetails
+          cliente={selectedCliente}
+          contas={contas}
+          agencias={agencias}
+          onVoltar={handleVoltarLista}
+        />
       ) : (
-        <div>Nenhum cliente encontrado com os critérios de busca.</div>
-      )}
+        <>
+          <h2>Lista de Clientes</h2>
 
-      {totalPages > 1 && (
-        <div className="mt-4">
-          <button
-            onClick={() => paginate(currentPage - 1)}
-            disabled={currentPage === 1}
-            className="px-3 py-2 mr-2 border rounded disabled:opacity-50"
-          >
-            Anterior
-          </button>
-          {renderPageNumbers()}
-          <button
-            onClick={() => paginate(currentPage + 1)}
-            disabled={currentPage === totalPages || totalPages === 0}
-            className="px-3 py-2 ml-2 border rounded disabled:opacity-50"
-          >
-            Próximo
-          </button>
-        </div>
+          <div className="mb-4 flex items-center space-x-4">
+            <div>
+              <label htmlFor="filterName" className="block text-gray-700 text-sm font-bold mb-2">
+                Filtrar por Nome:
+              </label>
+              <input
+                type="text"
+                id="filterName"
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                value={filterName}
+                onChange={handleFilterNameChange}
+              />
+            </div>
+            <div>
+              <label htmlFor="searchCpfCnpj" className="block text-gray-700 text-sm font-bold mb-2">
+                Pesquisar por CPF/CNPJ:
+              </label>
+              <input
+                type="text"
+                id="searchCpfCnpj"
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                value={searchCpfCnpj}
+                onChange={handleSearchCpfCnpjChange}
+              />
+            </div>
+          </div>
+
+          {currentClientes.length > 0 ? (
+            <ul>
+              {currentClientes.map(cliente => (
+                <li
+                  key={cliente.id}
+                  className="cursor-pointer hover:bg-gray-100 p-2 rounded"
+                  onClick={() => handleClienteClick(cliente)}
+                >
+                  {cliente.nome} - {cliente.cpfCnpj}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div>Nenhum cliente encontrado com os critérios de busca.</div>
+          )}
+
+          {totalPages > 1 && (
+            <div className="mt-4">
+              <button
+                onClick={() => paginate(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="px-3 py-2 mr-2 border rounded disabled:opacity-50"
+              >
+                Anterior
+              </button>
+              {renderPageNumbers()}
+              <button
+                onClick={() => paginate(currentPage + 1)}
+                disabled={currentPage === totalPages || totalPages === 0}
+                className="px-3 py-2 ml-2 border rounded disabled:opacity-50"
+              >
+                Próximo
+              </button>
+            </div>
+          )}
+        </>
       )}
     </div>
   );
