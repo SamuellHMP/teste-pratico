@@ -11,65 +11,62 @@ interface ClienteDetailsProps {
 }
 
 const ClienteDetails: React.FC<ClienteDetailsProps> = ({ cliente, contas, agencias, onVoltar }) => {
-  // Encontra as contas do cliente
   const clienteContas = contas.filter(conta => conta.cpfCnpjCliente === cliente.cpfCnpj);
-
-  // Encontra a agência do cliente
   const clienteAgencia = agencias.find(agencia => agencia.codigo === cliente.codigoAgencia);
 
   return (
-    <div>
-      <h2 className="text-xl font-bold mb-4">Detalhes do Cliente</h2>
-      <button onClick={onVoltar} className="px-4 py-2 bg-gray-300 rounded mb-4">
+    <div className="container mx-auto p-4">
+      <h2 className="text-2xl font-bold mb-4">Detalhes do Cliente</h2>
+      <button onClick={onVoltar} className="px-4 py-2 bg-gray-300 rounded mb-4 hover:bg-gray-400">
         Voltar para a Lista
       </button>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
         <div>
-          <h3 className="font-semibold">Informações Pessoais</h3>
-          <p><strong>ID:</strong> {cliente.id}</p>
-          <p><strong>Nome:</strong> {cliente.nome}</p>
-          {cliente.nomeSocial && <p><strong>Nome Social:</strong> {cliente.nomeSocial}</p>}
-          <p><strong>CPF/CNPJ:</strong> {cliente.cpfCnpj}</p>
-          {cliente.rg && <p><strong>RG:</strong> {cliente.rg}</p>}
-          <p><strong>Data de Nascimento:</strong> {cliente.dataNascimento.toLocaleDateString()}</p>
-          <p><strong>Email:</strong> {cliente.email}</p>
-          <p><strong>Estado Civil:</strong> {cliente.estadoCivil}</p>
+          <h3 className="font-semibold text-lg mb-2">Informações Pessoais</h3>
+          <p><strong className="text-gray-700">ID:</strong> <span className="text-gray-600">{cliente.id}</span></p>
+          <p><strong className="text-gray-700">Nome:</strong> <span className="text-gray-600">{cliente.nome}</span></p>
+          {cliente.nomeSocial && <p><strong className="text-gray-700">Nome Social:</strong> <span className="text-gray-600">{cliente.nomeSocial}</span></p>}
+          <p><strong className="text-gray-700">CPF/CNPJ:</strong> <span className="text-gray-600">{cliente.cpfCnpj}</span></p>
+          {cliente.rg && <p><strong className="text-gray-700">RG:</strong> <span className="text-gray-600">{cliente.rg}</span></p>}
+          <p><strong className="text-gray-700">Data de Nascimento:</strong> <span className="text-gray-600">{cliente.dataNascimento.toLocaleDateString()}</span></p>
+          <p><strong className="text-gray-700">Email:</strong> <span className="text-gray-600">{cliente.email}</span></p>
+          <p><strong className="text-gray-700">Estado Civil:</strong> <span className="text-gray-600">{cliente.estadoCivil}</span></p>
         </div>
 
         <div>
-          <h3 className="font-semibold">Informações Financeiras</h3>
-          <p><strong>Endereço:</strong> {cliente.endereco}</p>
-          <p><strong>Renda Anual:</strong> {cliente.rendaAnual.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
-          <p><strong>Patrimônio:</strong> {cliente.patrimonio.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+          <h3 className="font-semibold text-lg mb-2">Informações Financeiras</h3>
+          <p><strong className="text-gray-700">Endereço:</strong> <span className="text-gray-600">{cliente.endereco}</span></p>
+          <p><strong className="text-gray-700">Renda Anual:</strong> <span className="text-gray-600">{cliente.rendaAnual.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span></p>
+          <p><strong className="text-gray-700">Patrimônio:</strong> <span className="text-gray-600">{cliente.patrimonio.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span></p>
         </div>
       </div>
 
-      <div className="mt-6">
-        <h3 className="font-semibold mb-2">Contas Bancárias</h3>
+      <div className="mb-6">
+        <h3 className="font-semibold text-lg mb-2">Contas Bancárias</h3>
         {clienteContas.length > 0 ? (
-          <ul>
+          <ul className="shadow rounded border">
             {clienteContas.map(conta => (
-              <li key={conta.id} className="mb-2 border p-2 rounded">
-                <p><strong>ID da Conta:</strong> {conta.id}</p>
-                <p><strong>Tipo:</strong> {conta.tipo}</p>
-                <p><strong>Saldo:</strong> {conta.saldo.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
-                <p><strong>Limite de Crédito:</strong> {conta.limiteCredito.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
-                <p><strong>Crédito Disponível:</strong> {conta.creditoDisponivel.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+              <li key={conta.id} className="mb-2 border-b last:border-b-0 p-4">
+                <p><strong className="text-gray-700">ID da Conta:</strong> <span className="text-gray-600">{conta.id}</span></p>
+                <p><strong className="text-gray-700">Tipo:</strong> <span className="text-gray-600">{conta.tipo}</span></p>
+                <p><strong className="text-gray-700">Saldo:</strong> <span className="text-gray-600">{conta.saldo.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span></p>
+                <p><strong className="text-gray-700">Limite de Crédito:</strong> <span className="text-gray-600">{conta.limiteCredito.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span></p>
+                <p><strong className="text-gray-700">Crédito Disponível:</strong> <span className="text-gray-600">{conta.creditoDisponivel.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span></p>
               </li>
             ))}
           </ul>
         ) : (
-          <p>Este cliente não possui contas bancárias.</p>
+          <p className="text-gray-500">Este cliente não possui contas bancárias.</p>
         )}
       </div>
 
       {clienteAgencia && (
-        <div className="mt-6">
-          <h3 className="font-semibold mb-2">Agência</h3>
-          <p><strong>Código:</strong> {clienteAgencia.codigo}</p>
-          <p><strong>Nome:</strong> {clienteAgencia.nome}</p>
-          <p><strong>Endereço:</strong> {clienteAgencia.endereco}</p>
+        <div>
+          <h3 className="font-semibold text-lg mb-2">Agência</h3>
+          <p><strong className="text-gray-700">Código:</strong> <span className="text-gray-600">{clienteAgencia.codigo}</span></p>
+          <p><strong className="text-gray-700">Nome:</strong> <span className="text-gray-600">{clienteAgencia.nome}</span></p>
+          <p><strong className="text-gray-700">Endereço:</strong> <span className="text-gray-600">{clienteAgencia.endereco}</span></p>
         </div>
       )}
     </div>

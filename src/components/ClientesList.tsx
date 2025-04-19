@@ -3,7 +3,7 @@ import { Cliente } from '../interfaces/Cliente';
 import { Conta } from '../interfaces/Conta';
 import { Agencia } from '../interfaces/Agencia';
 import { fetchData } from '../utils/dataFetcher';
-import ClienteDetails from './ClienteDetails'; // Importe o novo componente
+import ClienteDetails from './ClienteDetails';
 
 const itemsPerPage = 10;
 
@@ -83,15 +83,17 @@ const ClienteList: React.FC = () => {
   };
 
   if (loading) {
-    return <div>Carregando clientes...</div>;
+    return <div className="text-center py-1">Carregando clientes...</div>;
   }
 
   if (error) {
-    return <div>Erro ao carregar os clientes: {error}</div>;
+    return <div className="text-red-500 py-1">Erro ao carregar os clientes: {error}</div>;
   }
 
   return (
-    <div>
+    <div className="container mx-auto p-2">
+      <h2 className="text-blue-900 text-2xl font-bold mb-4">Banco Gigante</h2>
+
       {selectedCliente ? (
         <ClienteDetails
           cliente={selectedCliente}
@@ -101,57 +103,74 @@ const ClienteList: React.FC = () => {
         />
       ) : (
         <>
-          <h2>Lista de Clientes</h2>
-
-          <div className="mb-4 flex items-center space-x-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
             <div>
-              <label htmlFor="filterName" className="block text-gray-700 text-sm font-bold mb-2">
+              <label htmlFor="filterName" className="block text-gray-700 text-sm font-bold mb-1">
                 Filtrar por Nome:
               </label>
               <input
                 type="text"
                 id="filterName"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-1 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 value={filterName}
                 onChange={handleFilterNameChange}
               />
             </div>
             <div>
-              <label htmlFor="searchCpfCnpj" className="block text-gray-700 text-sm font-bold mb-2">
+              <label htmlFor="searchCpfCnpj" className="block text-gray-700 text-sm font-bold mb-1">
                 Pesquisar por CPF/CNPJ:
               </label>
               <input
                 type="text"
                 id="searchCpfCnpj"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-1 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 value={searchCpfCnpj}
                 onChange={handleSearchCpfCnpjChange}
               />
             </div>
           </div>
 
-          {currentClientes.length > 0 ? (
-            <ul>
-              {currentClientes.map(cliente => (
-                <li
-                  key={cliente.id}
-                  className="cursor-pointer hover:bg-gray-100 p-2 rounded"
-                  onClick={() => handleClienteClick(cliente)}
-                >
-                  {cliente.nome} - {cliente.cpfCnpj}
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <div>Nenhum cliente encontrado com os critérios de busca.</div>
-          )}
+          <div className="shadow rounded border mb-2 overflow-x-auto"> {/* Adicionado overflow-x-auto para responsividade */}
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th scope="col" className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Nome
+                  </th>
+                  <th scope="col" className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    CPF/CNPJ
+                  </th>
+                  <th scope="col" className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Nascimento
+                  </th>
+                  <th scope="col" className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Renda Anual
+                  </th>
+                  <th scope="col" className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Agência
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {currentClientes.map(cliente => (
+                  <tr key={cliente.id} className="hover:bg-gray-100 cursor-pointer" onClick={() => handleClienteClick(cliente)}>
+                    <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-900">{cliente.nome}</td>
+                    <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-500">{cliente.cpfCnpj}</td>
+                    <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-500">{cliente.dataNascimento.toLocaleDateString()}</td>
+                    <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-500">{cliente.rendaAnual.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                    <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-500">{cliente.codigoAgencia}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
           {totalPages > 1 && (
-            <div className="mt-4">
+            <div className="mt-2 flex justify-center items-center space-x-2">
               <button
                 onClick={() => paginate(currentPage - 1)}
                 disabled={currentPage === 1}
-                className="px-3 py-2 mr-2 border rounded disabled:opacity-50"
+                className="px-3 py-2 border rounded disabled:opacity-50"
               >
                 Anterior
               </button>
@@ -159,7 +178,7 @@ const ClienteList: React.FC = () => {
               <button
                 onClick={() => paginate(currentPage + 1)}
                 disabled={currentPage === totalPages || totalPages === 0}
-                className="px-3 py-2 ml-2 border rounded disabled:opacity-50"
+                className="px-3 py-2 border rounded disabled:opacity-50"
               >
                 Próximo
               </button>
