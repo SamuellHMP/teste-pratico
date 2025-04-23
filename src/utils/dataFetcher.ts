@@ -69,8 +69,8 @@ export async function fetchData(): Promise<FetchDataResult> {
       nomeSocial: row.nomeSocial,
       email: row.email,
       endereco: row.endereco,
-      rendaAnual: Number(row.rendaAnual),
-      patrimonio: Number(row.patrimonio),
+      rendaAnual: Number(row.rendaAnual.replace('R$', '').replace(/\./g, '').replace(',', '.').trim()),
+      patrimonio: Number(row.patrimonio.replace('R$', '').replace(/\./g, '').replace(',', '.').trim()),
       estadoCivil: row.estadoCivil,
       codigoAgencia: Number(row.codigoAgencia),
     }));
@@ -79,9 +79,9 @@ export async function fetchData(): Promise<FetchDataResult> {
       id: row.id,
       cpfCnpjCliente: row.cpfCnpjCliente,
       tipo: row.tipo,
-      saldo: Number(row.saldo),
-      limiteCredito: Number(row.limiteCredito),
-      creditoDisponivel: Number(row.creditoDisponivel),
+      saldo: Number(row.saldo.replace('R$', '').replace(/\./g, '').replace(',', '.').trim()),
+      limiteCredito: Number(row.limiteCredito.replace('R$', '').replace(/\./g, '').replace(',', '.').trim()),
+      creditoDisponivel: Number(row.creditoDisponivel.replace('R$', '').replace(/\./g, '').replace(',', '.').trim()),
     }));
 
     const agencias: Agencia[] = agenciasResult.data.map(row => ({

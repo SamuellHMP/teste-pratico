@@ -167,11 +167,7 @@ const ClienteList: React.FC = () => {
                     <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-900">{cliente.nome}</td>
                     <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-500">{formatCpfCnpj(cliente.cpfCnpj)}</td>
                     <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-500">{cliente.dataNascimento.toLocaleDateString()}</td>
-                    <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
-                      {isNaN(cliente.rendaAnual)
-                        ? <i className="text-gray-500">indisponível</i>
-                        : cliente.rendaAnual.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-                    </td>
+                    <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-500">{cliente.rendaAnual.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
                     <td className="px-3 py-2 whitespace-nowrap text-sm text-gray-500">{cliente.codigoAgencia}</td>
                   </tr>
                 ))}

@@ -47,11 +47,7 @@ const ClienteDetails: React.FC<ClienteDetailsProps> = ({ cliente, contas, agenci
         <div>
           <h3 className="font-semibold text-lg mb-2">Informações Financeiras</h3>
           <p><strong className="text-gray-700">Endereço:</strong> <span className="text-gray-600">{cliente.endereco}</span></p>
-          <p><strong className="text-gray-700">Renda Anual:</strong> <span className="text-gray-600">
-            {isNaN(cliente.rendaAnual)
-              ? <i className="text-gray-500">indisponível</i>
-              : cliente.rendaAnual.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-          </span></p>
+          <p><strong className="text-gray-700">Renda Anual:</strong> <span className="text-gray-600">{cliente.rendaAnual.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span></p>
           <p><strong className="text-gray-700">Patrimônio:</strong> <span className="text-gray-600">{cliente.patrimonio.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span></p>
         </div>
       </div>
@@ -64,11 +60,7 @@ const ClienteDetails: React.FC<ClienteDetailsProps> = ({ cliente, contas, agenci
               <li key={conta.id} className="mb-2 border-b last:border-b-0 p-4">
                 <p><strong className="text-gray-700">ID da Conta:</strong> <span className="text-gray-600">{conta.id}</span></p>
                 <p><strong className="text-gray-700">Tipo:</strong> <span className="text-gray-600">{conta.tipo}</span></p>
-                <p><strong className="text-gray-700">Saldo:</strong> <span className="text-gray-600">
-                  {isNaN(conta.saldo)
-                    ? <i className="text-gray-500">indisponível</i>
-                    : conta.saldo.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-                </span></p>
+                <p><strong className="text-gray-700">Saldo:</strong> <span className="text-gray-600">{conta.saldo.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span></p>
                 <p><strong className="text-gray-700">Limite de Crédito:</strong> <span className="text-gray-600">{conta.limiteCredito.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span></p>
                 <p><strong className="text-gray-700">Crédito Disponível:</strong> <span className="text-gray-600">{conta.creditoDisponivel.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span></p>
               </li>
