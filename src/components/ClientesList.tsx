@@ -7,6 +7,10 @@ import ClienteDetails from './ClienteDetails';
 
 const itemsPerPage = 10;
 
+const normalizeString = (str: string): string => {
+  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+};
+
 const ClienteList: React.FC = () => {
   const [clientes, setClientes] = useState<Cliente[]>([]);
   const [contas, setContas] = useState<Conta[]>([]);
@@ -41,8 +45,14 @@ const ClienteList: React.FC = () => {
 
   const filteredClientes = useMemo(() => {
     return clientes.filter(cliente => {
-      const nameMatch = cliente.nome.toLowerCase().includes(filterName.toLowerCase());
-      const cpfCnpjMatch = cliente.cpfCnpj.includes(searchCpfCnpj);
+      const normalizedNomeCliente = normalizeString(cliente.nome);
+      const normalizedFilterName = normalizeString(filterName);
+      const nameMatch = normalizedNomeCliente.includes(normalizedFilterName);
+
+      const cleanedCpfCnpjCliente = cliente.cpfCnpj.replace(/\D/g, '');
+      const cleanedSearchCpfCnpj = searchCpfCnpj.replace(/\D/g, '');
+      const cpfCnpjMatch = cleanedCpfCnpjCliente.includes(cleanedSearchCpfCnpj);
+
       return nameMatch && cpfCnpjMatch;
     });
   }, [clientes, filterName, searchCpfCnpj]);
