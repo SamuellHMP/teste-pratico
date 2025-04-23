@@ -5,12 +5,10 @@ Este é um projeto de teste prático para o Banco Gigante, desenvolvido com Reac
 ## ✨ Funcionalidades Implementadas:
 
 * **Listagem de Clientes:** Exibe uma lista paginada de clientes com informações como nome, CPF/CNPJ (formatado!), data de nascimento, renda anual e agência. 📄
-* **Filtragem:** Permite filtrar a lista de clientes por nome em campos centralizados para uma melhor experiência do usuário. 🔍
+* **Filtragem:** Permite filtrar a lista de clientes por nome. 🔍
 * **Pesquisa:** Possibilita pesquisar clientes pelo CPF/CNPJ. 🕵️‍♂️
 * **Formatação de CPF/CNPJ:** Os campos de CPF e CNPJ são exibidos no formato padrão (000.000.000-00 e 00.000.000/0000-00). ✅
-* **Tratamento de Renda Anual:** Quando a renda anual não está disponível (NaN), exibe a mensagem "*indisponível*" em cinza. 💸➡️❓
 * **Detalhes do Cliente:** Ao clicar em um cliente, é possível visualizar uma página com informações detalhadas, incluindo contas bancárias e dados da agência. ℹ️
-* **Tratamento de Saldo:** Similar à renda anual, saldos indisponíveis (NaN) nas contas são exibidos como "*indisponível*". 💰➡️❓
 * **Mensagem de Agência Não Encontrada:** Na página de detalhes, caso a agência do cliente não seja encontrada, uma mensagem informativa é exibida. 🏢➡️❌
 * **Layout Responsivo:** A lista de clientes utiliza um layout responsivo para melhor visualização em diferentes dispositivos. 📱💻
 * **Últimas atualizações:** Conversão correta de números com "R$", "." e ",". Busca por nome sem acentos e CPF/CNPJ sem pontuação.📍
