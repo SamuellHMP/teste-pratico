@@ -24,7 +24,7 @@ Este é um projeto de teste prático para o Banco Gigante, desenvolvido com Reac
 
 1.  Clone o repositório:
     ```bash
-    git clone [https://github.com/SamuellHMP/teste-pratico.git](https://github.com/SamuellHMP/teste-pratico.git)
+    git clone https://github.com/SamuellHMP/teste-pratico.git
     ```
 2.  Navegue até a pasta do projeto:
     ```bash
